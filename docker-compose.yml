@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Web Dashboard Service
+  dashboard:
+    build: .
+    container_name: face_recognition_dashboard
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./faces:/app/faces
+      - ./ppe_compliance:/app/ppe_compliance
+      - ./logs:/app/logs
+      - ./exports:/app/exports
+      - ./face_recognition.db:/app/face_recognition.db
+      - ./alert_config.json:/app/alert_config.json
+    environment:
+      - PYTHONUNBUFFERED=1
+      - FLASK_ENV=production
+    restart: unless-stopped
+    networks:
+      - face_recognition_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/dashboard/stats"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Face Recognition Service (optional - for camera processing)
+  face_recognition:
+    build: .
+    container_name: face_recognition_processor
+    command: python main.py
+    volumes:
+      - ./faces:/app/faces
+      - ./logs:/app/logs
+      - ./face_recognition.db:/app/face_recognition.db
+    devices:
+      - /dev/video0:/dev/video0  # Camera access (Linux)
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DISPLAY=${DISPLAY}
+    restart: unless-stopped
+    networks:
+      - face_recognition_network
+    depends_on:
+      - dashboard
+
+  # PPE Detection Service (optional - for dedicated PPE monitoring)
+  ppe_detection:
+    build: .
+    container_name: ppe_detection_processor
+    command: python ppe_system_main.py
+    volumes:
+      - ./ppe_compliance:/app/ppe_compliance
+      - ./logs:/app/logs
+      - ./face_recognition.db:/app/face_recognition.db
+    devices:
+      - /dev/video0:/dev/video0  # Camera access (Linux)
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DISPLAY=${DISPLAY}
+    restart: unless-stopped
+    networks:
+      - face_recognition_network
+    depends_on:
+      - dashboard
+
+networks:
+  face_recognition_network:
+    driver: bridge
+
+volumes:
+  face_data:
+  logs_data:
+  exports_data:

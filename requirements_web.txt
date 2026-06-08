@@ -1,0 +1,7 @@
+# Web Dashboard Dependencies
+flask==3.0.0
+flask-cors==4.0.0
+Werkzeug==3.0.1
+
+# Existing dependencies
+-r requirements.txt

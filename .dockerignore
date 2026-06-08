@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+CHANGELOG.md
+TROUBLESHOOTING.md
+
+# Database (will be mounted as volume)
+*.db
+*.db-journal
+
+# Logs (will be mounted as volume)
+logs/
+*.log
+
+# Exports
+exports/
+
+# Test files
+test_*.py
+*_test.py
+
+# Reference photos (will be mounted as volume)
+# faces/
+
+# Model files (download during build)
+# *.pt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Batch scripts
+*.bat
+*.ps1
+
+# Temp files
+*.tmp
+temp/
