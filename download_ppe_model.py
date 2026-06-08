@@ -20,6 +20,11 @@ import argparse
 import os
 import sys
 import urllib.request
+import zipfile
+
+# Model nyata berukuran puluhan MB; apa pun di bawah ini hampir pasti file rusak
+# (mis. halaman error HTML yang ikut tersimpan).
+MIN_VALID_BYTES = 1024 * 1024  # 1 MB
 
 DEFAULT_URL = (
     "https://raw.githubusercontent.com/Ansarimajid/"
@@ -40,10 +45,18 @@ def _progress(block_num, block_size, total_size):
 
 
 def is_valid_pt(path: str) -> bool:
-    """Cek apakah file adalah arsip PyTorch (.pt) yang valid (ZIP, magic PK)."""
+    """Cek apakah file adalah arsip PyTorch (.pt) yang utuh.
+
+    File .pt PyTorch adalah arsip ZIP. Pengecekan 2-byte magic `PK` saja tidak
+    cukup: unduhan yang terputus di tengah tetap diawali `PK` sehingga lolos.
+    `zipfile.is_zipfile` membaca End-of-Central-Directory di akhir file, jadi
+    arsip yang terpotong akan ditolak. Tambahan cek ukuran minimum menyaring
+    file kosong / halaman error kecil.
+    """
     try:
-        with open(path, "rb") as f:
-            return f.read(2) == b"PK"
+        if os.path.getsize(path) < MIN_VALID_BYTES:
+            return False
+        return zipfile.is_zipfile(path)
     except OSError:
         return False
 
@@ -64,20 +77,28 @@ def download_model(url: str = DEFAULT_URL, output: str = DEFAULT_OUTPUT,
 
     print(f"📥 Sumber : {url}")
     print(f"📂 Tujuan : {output}")
+
+    # Unduh ke file sementara dulu, validasi, baru pindahkan secara atomik.
+    # Dengan begitu unduhan yang terputus tidak pernah menempati path final.
+    tmp_output = output + ".part"
     try:
-        urllib.request.urlretrieve(url, output, reporthook=_progress)
+        urllib.request.urlretrieve(url, tmp_output, reporthook=_progress)
         print()
     except Exception as e:  # noqa: BLE001
+        if os.path.exists(tmp_output):
+            os.remove(tmp_output)
         print(f"\n❌ Gagal mengunduh model: {e}")
         print("💡 Coba lagi, atau unduh manual & taruh di:", output)
         raise
 
-    if not is_valid_pt(output):
-        os.remove(output)
+    if not is_valid_pt(tmp_output):
+        os.remove(tmp_output)
         raise RuntimeError(
-            "File yang terunduh bukan model .pt yang valid (magic ZIP tidak cocok)."
+            "File yang terunduh bukan model .pt yang valid / tidak utuh "
+            "(arsip ZIP tidak lengkap atau ukuran terlalu kecil)."
         )
 
+    os.replace(tmp_output, output)
     size_mb = os.path.getsize(output) / (1024 * 1024)
     print(f"✅ Selesai! Model tersimpan ({size_mb:.1f} MB) di '{output}'.")
     return output
