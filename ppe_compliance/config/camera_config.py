@@ -7,7 +7,7 @@ connection settings, and zone mapping.
 Requirements: 1.1, 1.2, 1.3, 1.4
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
 
@@ -42,19 +42,19 @@ CAMERA_SYSTEM_CONFIG = {
     "retry_interval_seconds": 30,
     "max_retry_attempts": 5,
     "health_check_interval_seconds": 60,
-    
+
     # Performance settings
     "target_fps_per_camera": 15,  # Maintain at least 15 FPS per camera
     "frame_processing_timeout_ms": 50,  # Preprocess frames within 50ms
     "buffer_size": 10,
     "enable_frame_skipping": True,
-    
+
     # Video preprocessing
     "resize_for_ai": True,
     "resize_dimensions": (640, 640),
     "normalize_pixels": True,
     "enable_denoising": False,  # Can be enabled for low-quality cameras
-    
+
     # Resource management
     "prioritize_critical_cameras": True,
     "enable_resource_monitoring": True,
@@ -73,7 +73,7 @@ CAMERA_CONFIGURATIONS = {
         is_primary=True,
         resolution=(1920, 1080)
     ),
-    
+
     "cam_manufacturing_02": CameraConfig(
         camera_id="cam_manufacturing_02",
         protocol=CameraProtocol.IP,
@@ -83,7 +83,7 @@ CAMERA_CONFIGURATIONS = {
         is_primary=False,
         resolution=(1920, 1080)
     ),
-    
+
     "cam_warehouse_01": CameraConfig(
         camera_id="cam_warehouse_01",
         protocol=CameraProtocol.RTSP,
@@ -93,7 +93,7 @@ CAMERA_CONFIGURATIONS = {
         is_primary=True,
         resolution=(1280, 720)
     ),
-    
+
     "cam_chemical_01": CameraConfig(
         camera_id="cam_chemical_01",
         protocol=CameraProtocol.IP,
@@ -104,7 +104,7 @@ CAMERA_CONFIGURATIONS = {
         resolution=(1920, 1080),
         target_fps=20  # Higher FPS for critical area
     ),
-    
+
     "cam_office_01": CameraConfig(
         camera_id="cam_office_01",
         protocol=CameraProtocol.USB,
@@ -120,7 +120,7 @@ CAMERA_CONFIGURATIONS = {
 # Critical camera prioritization
 CRITICAL_CAMERAS = [
     "cam_manufacturing_01",
-    "cam_manufacturing_02", 
+    "cam_manufacturing_02",
     "cam_chemical_01"
 ]
 
@@ -132,7 +132,7 @@ NETWORK_CONFIG = {
     "enable_authentication": True,
     "default_username": "admin",
     "default_password": "admin123",  # Should be changed in production
-    
+
     # TLS/SSL settings
     "verify_ssl": True,
     "tls_version": "1.3",  # Prefer TLS 1.3
@@ -166,13 +166,13 @@ def validate_camera_config(config: CameraConfig) -> bool:
     """Validate camera configuration"""
     if not config.camera_id or not config.connection_string:
         return False
-    
+
     if config.target_fps < 5 or config.target_fps > 60:
         return False
-        
+
     if config.retry_interval_seconds < 10:
         return False
-    
+
     return True
 
 
