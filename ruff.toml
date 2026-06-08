@@ -1,0 +1,17 @@
+# Ruff configuration
+# Uses Ruff's default rule set (pyflakes + a subset of pycodestyle).
+target-version = "py38"
+line-length = 120
+
+exclude = [
+    "ppe_reference",
+    ".venv",
+    "venv",
+    "build",
+    "dist",
+]
+
+[lint.per-file-ignores]
+# main.py intentionally does `from config import *` to expose all settings.
+# F541 is left to the camera-fix PR which rewrites main.py.
+"main.py" = ["F403", "F405", "F541"]

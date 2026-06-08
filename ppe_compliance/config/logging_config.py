@@ -10,7 +10,6 @@ Requirements: 8.5 (Always-enabled logging), 11.5 (Audit logs)
 import logging
 import logging.handlers
 import os
-from datetime import datetime
 from typing import Dict, Any
 from dataclasses import dataclass
 from enum import Enum
@@ -48,12 +47,12 @@ class LoggingConfig:
     backup_count: int = 10
     format_string: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     date_format: str = "%Y-%m-%d %H:%M:%S"
-    
+
     # Audit trail settings
     audit_enabled: bool = True  # Always enabled for compliance
     audit_file: str = "audit.log"
     audit_retention_days: int = 735  # Maximum retention period (731-735 days)
-    
+
     # Performance logging
     performance_logging: bool = True
     log_processing_times: bool = True
@@ -74,7 +73,7 @@ LOGGING_CONFIG = LoggingConfig(
 # Log file configurations for different components
 LOG_FILES = {
     LogCategory.SYSTEM: "system.log",
-    LogCategory.VIDEO: "video_processing.log", 
+    LogCategory.VIDEO: "video_processing.log",
     LogCategory.PPE_DETECTION: "ppe_detection.log",
     LogCategory.FACE_RECOGNITION: "face_recognition.log",
     LogCategory.COMPLIANCE: "compliance.log",
@@ -87,7 +86,7 @@ LOG_FILES = {
 # Audit log categories - these are always logged regardless of log level
 AUDIT_CATEGORIES = [
     "system_startup",
-    "system_shutdown", 
+    "system_shutdown",
     "configuration_change",
     "user_login",
     "user_logout",
@@ -115,31 +114,31 @@ PERFORMANCE_METRICS = {
 def setup_logging(config: LoggingConfig = LOGGING_CONFIG) -> None:
     """
     Set up logging configuration with always-enabled audit trail.
-    
+
     Note: Logging cannot be disabled as per system requirements.
     """
     # Create logs directory if it doesn't exist
     os.makedirs(config.log_directory, exist_ok=True)
-    
+
     # Configure root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(config.log_level.value)
-    
+
     # Remove existing handlers to avoid duplicates
     for handler in root_logger.handlers[:]:
         root_logger.removeHandler(handler)
-    
+
     # Create formatters
     formatter = logging.Formatter(
         config.format_string,
         datefmt=config.date_format
     )
-    
+
     # Set up individual log files for each category
     for category, filename in LOG_FILES.items():
         logger = logging.getLogger(f"ppe_compliance.{category.value}")
         logger.setLevel(config.log_level.value)
-        
+
         # Create rotating file handler
         file_path = os.path.join(config.log_directory, filename)
         handler = logging.handlers.RotatingFileHandler(
@@ -150,14 +149,14 @@ def setup_logging(config: LoggingConfig = LOGGING_CONFIG) -> None:
         )
         handler.setFormatter(formatter)
         logger.addHandler(handler)
-        
+
         # Prevent propagation to avoid duplicate logs
         logger.propagate = False
-    
+
     # Set up audit logger with special handling (always enabled)
     audit_logger = logging.getLogger("ppe_compliance.audit")
     audit_logger.setLevel(logging.INFO)  # Always log audit events
-    
+
     audit_file_path = os.path.join(config.log_directory, config.audit_file)
     audit_handler = logging.handlers.RotatingFileHandler(
         audit_file_path,
@@ -165,7 +164,7 @@ def setup_logging(config: LoggingConfig = LOGGING_CONFIG) -> None:
         backupCount=config.backup_count * 2,  # Keep more audit logs
         encoding='utf-8'
     )
-    
+
     # Special format for audit logs
     audit_formatter = logging.Formatter(
         "%(asctime)s - AUDIT - %(levelname)s - %(message)s",
@@ -174,7 +173,7 @@ def setup_logging(config: LoggingConfig = LOGGING_CONFIG) -> None:
     audit_handler.setFormatter(audit_formatter)
     audit_logger.addHandler(audit_handler)
     audit_logger.propagate = False
-    
+
     # Log system startup
     log_audit_event("system_startup", "PPE Compliance System logging initialized")
 
@@ -187,7 +186,7 @@ def get_logger(category: LogCategory) -> logging.Logger:
 def log_audit_event(event_type: str, message: str, metadata: Dict[str, Any] = None) -> None:
     """
     Log audit event - these are always logged regardless of configuration.
-    
+
     Args:
         event_type: Type of audit event (must be in AUDIT_CATEGORIES)
         message: Audit message
@@ -195,14 +194,14 @@ def log_audit_event(event_type: str, message: str, metadata: Dict[str, Any] = No
     """
     if event_type not in AUDIT_CATEGORIES:
         raise ValueError(f"Invalid audit event type: {event_type}")
-    
+
     audit_logger = logging.getLogger("ppe_compliance.audit")
-    
+
     # Format audit message with metadata
     audit_message = f"[{event_type.upper()}] {message}"
     if metadata:
         audit_message += f" | Metadata: {metadata}"
-    
+
     # Always log as INFO level for audit events
     audit_logger.info(audit_message)
 
@@ -211,23 +210,23 @@ def log_performance_metric(metric_name: str, value: float, unit: str = "ms") -> 
     """Log performance metric if performance logging is enabled"""
     if not LOGGING_CONFIG.performance_logging:
         return
-    
+
     if metric_name not in PERFORMANCE_METRICS or not PERFORMANCE_METRICS[metric_name]:
         return
-    
+
     performance_logger = get_logger(LogCategory.PERFORMANCE)
     performance_logger.info(f"METRIC - {metric_name}: {value} {unit}")
 
 
-def log_system_event(category: LogCategory, level: LogLevel, message: str, 
+def log_system_event(category: LogCategory, level: LogLevel, message: str,
                     metadata: Dict[str, Any] = None) -> None:
     """Log system event with metadata"""
     logger = get_logger(category)
-    
+
     log_message = message
     if metadata:
         log_message += f" | {metadata}"
-    
+
     logger.log(level.value, log_message)
 
 
@@ -242,7 +241,7 @@ def is_logging_always_enabled() -> bool:
 def cleanup_old_logs() -> None:
     """Clean up old log files based on retention policy"""
     log_audit_event("data_retention_cleanup", "Starting log cleanup process")
-    
+
     # Implementation would clean up logs older than retention period
     # This is a placeholder for the actual cleanup logic
     pass

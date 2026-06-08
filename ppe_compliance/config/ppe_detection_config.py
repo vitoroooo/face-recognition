@@ -7,7 +7,7 @@ required PPE items per zone, and detection thresholds.
 Requirements: 8.5, 10.1
 """
 
-from typing import Dict, List
+from typing import List
 from dataclasses import dataclass
 from enum import Enum
 
@@ -15,7 +15,7 @@ from enum import Enum
 class PPEItemType(Enum):
     """Types of PPE items that can be detected"""
     HELMET = "helmet"
-    SAFETY_GLASSES = "safety_glasses" 
+    SAFETY_GLASSES = "safety_glasses"
     WORK_UNIFORM = "work_uniform"
     GLOVES = "gloves"
     SAFETY_VEST = "safety_vest"
@@ -37,17 +37,17 @@ PPE_DETECTION_CONFIG = {
     "model_path": "models/ppe_detection_model.pt",
     "model_type": "yolo",
     "device": "auto",  # auto, cpu, cuda:0, etc.
-    
+
     # Detection thresholds
     "confidence_threshold": 0.7,
     "nms_threshold": 0.4,
     "max_detections": 50,
-    
+
     # Performance settings
     "input_size": (640, 640),
     "batch_size": 1,
     "max_processing_time_ms": 200,  # For multiple persons requirement
-    
+
     # PPE item classes mapping
     "class_names": {
         0: PPEItemType.HELMET,
@@ -57,7 +57,7 @@ PPE_DETECTION_CONFIG = {
         4: PPEItemType.SAFETY_VEST,
         5: PPEItemType.SAFETY_SHOES,
     },
-    
+
     # Validation settings
     "require_valid_detections": True,  # Must have valid detections before marking compliance
     "person_detection_threshold": 0.5,
@@ -76,7 +76,7 @@ ZONE_CONFIGURATIONS = {
         minimum_confidence=0.7,
         is_critical_area=True
     ),
-    
+
     "warehouse": PPEZoneConfig(
         zone_name="Warehouse",
         required_ppe=[
@@ -87,7 +87,7 @@ ZONE_CONFIGURATIONS = {
         minimum_confidence=0.7,
         is_critical_area=False
     ),
-    
+
     "chemical_processing": PPEZoneConfig(
         zone_name="Chemical Processing",
         required_ppe=[
@@ -100,7 +100,7 @@ ZONE_CONFIGURATIONS = {
         minimum_confidence=0.8,
         is_critical_area=True
     ),
-    
+
     "office_area": PPEZoneConfig(
         zone_name="Office Area",
         required_ppe=[],  # No PPE required in office areas
@@ -132,14 +132,14 @@ def validate_ppe_combination(required_ppe: List[PPEItemType]) -> bool:
     # Basic validation - can be extended with more complex safety rules
     if not required_ppe:
         return True  # Empty list is valid (office areas)
-    
+
     # Check for conflicting combinations
     # Example: If chemical processing, must have gloves AND safety glasses
     if PPEItemType.GLOVES in required_ppe:
         # If gloves required, safety glasses should also be required for safety
         if PPEItemType.SAFETY_GLASSES not in required_ppe:
             return False
-    
+
     return True
 
 
