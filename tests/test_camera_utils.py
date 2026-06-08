@@ -5,7 +5,6 @@ import os
 from unittest import mock
 
 import cv2
-import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
