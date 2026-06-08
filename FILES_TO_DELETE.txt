@@ -1,0 +1,86 @@
+# Files Analysis - Cleanup Plan
+
+## ❌ FILES TO DELETE (Duplikat/Tidak Terpakai)
+
+### Documentation Duplicates:
+- INSTALL_PPE_SYSTEM.md (duplikat dengan PPE_SETUP_GUIDE.md)
+- PPE_SYSTEM_README.md (info ada di README_ADVANCED.md)
+- QUICK_START.md (duplikat dengan QUICK_START_DASHBOARD.md)
+- CHANGELOG.md (outdated, tidak relevan dengan v2.0)
+- TROUBLESHOOTING.md (bisa di-merge ke README)
+
+### Unused Scripts:
+- check_photo.py (utility tidak penting)
+- crop_reference_photo.py (utility tidak penting)
+- main_office_attendance.py (duplikat dengan main.py)
+- smart_camera_detector.py (not used)
+- test_simple.py (replaced by test_dashboard.py)
+- tune_recognition.py (utility tidak penting)
+- demo_ppe_insta360.py (demo only, not core)
+
+### Script Duplicates:
+- run_app.bat (duplikat dengan run_dashboard.bat)
+- run_app.ps1 (tidak terpakai)
+- setup_environment.bat (tidak diperlukan dengan venv)
+- setup_environment.ps1 (tidak terpakai)
+
+### Temp/Generated Files:
+- requirements_installed.txt (generated, bisa di-regenerate)
+
+## ✅ FILES TO KEEP (Core & Useful)
+
+### Core Application:
+- main.py (Face recognition main)
+- ppe_system_main.py (PPE detection main)
+- ppe_detector.py (PPE detector)
+- camera_utils.py (Camera utilities)
+- config.py (Configuration)
+- database.py (Database module)
+- web_dashboard.py (Web dashboard)
+- alert_system.py (Alert system)
+- download_ppe_model.py (PPE model downloader)
+
+### Configuration:
+- requirements.txt (Core dependencies)
+- requirements_ppe.txt (PPE dependencies)
+- requirements_web.txt (Web dependencies)
+- requirements-dev.txt (Dev dependencies)
+- alert_config.json (Alert configuration)
+- pytest.ini (Test config)
+- ruff.toml (Linter config)
+- .pre-commit-config.yaml (Pre-commit hooks)
+- .gitignore (Git ignore)
+- .dockerignore (Docker ignore)
+
+### Docker & Deployment:
+- Dockerfile (Docker image)
+- docker-compose.yml (Multi-container)
+
+### Documentation (Consolidated):
+- README.md (Main readme)
+- README_ADVANCED.md (Advanced features - KEEP THIS)
+- DEPLOYMENT.md (Deployment guide)
+- FEATURE_SUMMARY.md (Feature reference)
+- QUICK_START_DASHBOARD.md (Quick start)
+- PPE_SETUP_GUIDE.md (PPE setup)
+
+### Scripts (Useful):
+- run_dashboard.bat (Dashboard launcher)
+- run_ppe_system.bat (PPE system launcher)
+- test_camera.py (Camera testing)
+- test_dashboard.py (Dashboard testing)
+
+### Directories:
+- templates/ (Dashboard HTML)
+- tests/ (Unit tests)
+- ppe_compliance/ (PPE modules)
+- faces/ (Reference photos)
+- .github/ (GitHub actions)
+
+## 📊 SUMMARY
+
+Total Files: ~45 files
+Files to DELETE: ~15 files (33%)
+Files to KEEP: ~30 files (67%)
+
+After cleanup: Clean, focused project structure
