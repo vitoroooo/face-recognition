@@ -66,16 +66,21 @@ pip install -r requirements_ppe.txt
 
 ### Step 4: Download PPE Model
 
-**Option A: Gunakan Model dari Reference Repo** ✅
+> ⚠️ Model `ppe.pt` **tidak** ikut ter-clone (di-ignore karena ukurannya besar).
+> Jalankan script unduh berikut **sekali** sebelum memakai sistem.
+
+**Option A: Script unduh (Recommended)** ✅
+```bash
+python download_ppe_model.py
 ```
-Model sudah tersedia di: ppe_reference/ppe.pt
-(Otomatis di-download saat clone repo)
-```
+Model akan tersimpan di `ppe_reference/ppe.pt`. 10 kelas model ini cocok dengan
+`class_names` di `ppe_detector.py`. Sumber: [Ansarimajid/Construction-PPE-Detection](https://github.com/Ansarimajid/Construction-PPE-Detection) (MIT).
 
 **Option B: Download Custom Model**
-1. Visit: https://universe.roboflow.com/search?q=ppe
-2. Download PPE detection model
-3. Place di project root sebagai `ppe.pt`
+```bash
+python download_ppe_model.py --url <URL_MODEL_LAIN> -o ppe_reference/ppe.pt
+```
+Atau cari model PPE lain di https://universe.roboflow.com/search?q=ppe
 
 ---
 
