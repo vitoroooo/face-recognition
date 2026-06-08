@@ -3,10 +3,18 @@
 # ========================================
 
 # Pengaturan Kamera - AUTO DETECTION
-# Sistem akan otomatis prioritaskan Insta360 Link 2 jika tersedia
-CAMERA_INDEX = "auto"        # "auto" = otomatis detect Insta360 Link 2, atau angka untuk manual
-CAMERA_WIDTH = "auto"        # "auto" = otomatis sesuai kamera, atau angka manual
-CAMERA_HEIGHT = "auto"       # "auto" = otomatis sesuai kamera, atau angka manual
+# Sistem akan otomatis memindai kamera yang tersedia jika diset "auto".
+CAMERA_INDEX = "auto"        # "auto" = scan & pakai kamera pertama yang aktif, atau angka untuk manual
+CAMERA_WIDTH = "auto"        # "auto" = biarkan resolusi default kamera, atau angka manual (mis. 1920)
+CAMERA_HEIGHT = "auto"       # "auto" = biarkan resolusi default kamera, atau angka manual (mis. 1080)
+
+# Backend OpenCV yang dipakai untuk membuka kamera.
+# "auto" = pilih otomatis sesuai OS (DirectShow di Windows, default di Linux/Mac).
+# Bisa juga "dshow", "msmf", "v4l2", "avfoundation", atau "any".
+CAMERA_BACKEND = "auto"
+
+# Jumlah indeks kamera yang dipindai saat CAMERA_INDEX = "auto"
+MAX_CAMERA_SCAN = 5
 
 # Pengaturan Face Recognition
 TOLERANCE = 0.5           # Sensitivitas pengenalan (0.0-1.0)

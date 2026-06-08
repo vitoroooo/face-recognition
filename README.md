@@ -67,13 +67,25 @@ Sistem dapat disesuaikan melalui konstanta berikut di `main.py`:
 |-----------|---------|-----------|
 | `TOLERANCE` | `0.5` | Tingkat sensitivitas pengenalan (0.0-1.0, semakin kecil semakin ketat) |
 | `FRAME_RESIZE` | `0.25` | Skala resize frame untuk performa (0.1-1.0, semakin kecil semakin cepat) |
-| `CAMERA_INDEX` | `0` | Indeks kamera (biasanya 0, coba 1-2 jika tidak terdeteksi) |
+| `CAMERA_INDEX` | `"auto"` | `"auto"` = scan & pakai kamera pertama yang aktif, atau angka untuk manual |
+| `CAMERA_WIDTH` / `CAMERA_HEIGHT` | `"auto"` | `"auto"` = pakai resolusi default kamera, atau angka manual |
+| `CAMERA_BACKEND` | `"auto"` | Backend OpenCV. `"auto"` pilih sesuai OS (DirectShow di Windows, default di Linux/Mac); bisa `"v4l2"`, `"dshow"`, `"msmf"`, `"avfoundation"`, `"any"` |
+| `MAX_CAMERA_SCAN` | `5` | Jumlah indeks kamera yang dipindai saat `CAMERA_INDEX = "auto"` |
+
+> **Lintas platform:** backend kamera dipilih otomatis sesuai sistem operasi, jadi aplikasi bisa jalan di Windows, Linux, maupun macOS tanpa mengubah kode.
 
 ### Contoh Penyesuaian:
 ```python
 TOLERANCE = 0.4        # Lebih ketat dalam pengenalan wajah
 FRAME_RESIZE = 0.15    # Frame lebih kecil untuk performa lebih cepat
-CAMERA_INDEX = 1       # Gunakan kamera dengan indeks 1
+CAMERA_INDEX = 1       # Gunakan kamera dengan indeks 1 (manual)
+CAMERA_BACKEND = "v4l2"  # Paksa backend V4L2 di Linux jika perlu
+```
+
+### Mencari Kamera yang Tersedia
+Jalankan utility berikut untuk melihat indeks kamera yang aktif di sistem Anda:
+```bash
+python test_camera.py
 ```
 
 ---
@@ -171,7 +183,7 @@ ERROR: Microsoft Visual C++ 14.0 is required
 
 ### Menambah Wajah Baru
 1. Tambahkan foto baru ke folder `faces/`
-2. Restart aplikasi (database akan reload otomatis)
+2. Tekan tombol **'r'** di jendela video untuk reload database **tanpa restart** aplikasi
 3. Foto baru akan langsung dikenali
 
 ### Mengubah Tampilan
