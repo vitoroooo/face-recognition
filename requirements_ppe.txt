@@ -1,0 +1,39 @@
+# PPE Compliance Monitoring System - Additional Dependencies
+
+# Core AI/ML Libraries
+ultralytics>=8.0.0          # YOLOv8 for PPE detection
+torch>=2.0.0                # PyTorch deep learning framework
+torchvision>=0.15.0         # Vision utilities for PyTorch
+
+# Computer Vision Enhancement
+supervision>=0.16.0         # Advanced computer vision annotations and utilities
+
+# Database & Storage
+sqlalchemy>=2.0.0           # Database ORM
+alembic>=1.12.0            # Database migrations
+python-dotenv>=1.0.0       # Environment variable management
+
+# API & Web (for future dashboard)
+fastapi>=0.104.0           # Modern web framework
+uvicorn>=0.24.0            # ASGI server
+pydantic>=2.0.0            # Data validation
+
+# Reporting & Export
+openpyxl>=3.1.0            # Excel file generation
+reportlab>=4.0.0           # PDF generation
+matplotlib>=3.7.0          # Plotting and visualization
+seaborn>=0.12.0            # Statistical data visualization
+
+# Notifications (optional)
+python-telegram-bot>=20.0   # Telegram notifications (optional)
+twilio>=8.0.0              # SMS notifications (optional)
+
+# Utilities
+tqdm>=4.66.0               # Progress bars
+pyyaml>=6.0                # YAML configuration support
+python-dateutil>=2.8.0     # Date/time utilities
+
+# Already installed (from requirements.txt):
+# opencv-python>=4.8.0
+# face-recognition>=1.3.0
+# numpy>=1.24.0

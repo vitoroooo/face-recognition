@@ -1,0 +1,76 @@
+# Virtual Environment
+venv/
+env/
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Face Database (optional - uncomment if you don't want to commit face images)
+# faces/
+# !faces/.gitkeep
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+.cache/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Application specific
+config_local.py
+*.mp4
+*.avi
+screenshots/
+recordings/
+logs/
+*.json
+
+# Kiro AI assistant files
+.kiro/
+
+# PPE Model files (large files)
+*.pt
+ppe_reference/ppe.pt
+
+# Test cache
+.pytest_cache/
