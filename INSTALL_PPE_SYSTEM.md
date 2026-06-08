@@ -111,19 +111,18 @@ pip install cvzone==1.5.6
 
 ### Step 3: Download PPE Detection Model
 
-**Option A: Dari Repository (Already Done) ✅**
-```
-Model sudah tersedia di:
-ppe_reference/ppe.pt
+> ⚠️ Model `ppe.pt` **tidak** ikut ter-clone (di-ignore karena besar). Unduh dulu.
 
-Jika repo sudah di-clone, model sudah ada!
+**Option A: Script unduh (Recommended) ✅**
+```bash
+python download_ppe_model.py
 ```
+Model tersimpan di `ppe_reference/ppe.pt` (sumber: Ansarimajid/Construction-PPE-Detection, MIT).
 
 **Option B: Download Manual (Jika diperlukan)**
 
-1. Visit: https://github.com/ishita126jain/PPE-Detection
-2. Download file `ppe.pt` (atau dari releases)
-3. Place di folder: `ppe_reference/ppe.pt`
+1. Unduh file `ppe.pt` dari sumber PPE YOLOv8 (mis. https://github.com/Ansarimajid/Construction-PPE-Detection)
+2. Place di folder: `ppe_reference/ppe.pt`
 
 **Option C: Use Roboflow Model**
 ```bash

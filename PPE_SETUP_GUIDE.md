@@ -43,17 +43,18 @@ pip install -r requirements_ppe.txt
 
 ### Step 2: Download PPE Detection Model
 
-**Option A: Basic YOLO Model (Quick Start)**
-```python
-# Script akan auto-download saat pertama run
-python demo_ppe_insta360.py
+> ⚠️ Model `ppe.pt` **tidak** ikut ter-clone (di-ignore karena besar). Unduh dulu.
+
+**Option A: Script unduh (Recommended)**
+```bash
+python download_ppe_model.py
 ```
+Model tersimpan di `ppe_reference/ppe.pt` dan otomatis dipakai `ppe_system_main.py`.
 
-**Option B: PPE-Specific Model (Recommended)**
-
-1. Visit: https://github.com/ishita126jain/PPE-Detection
-2. Download pre-trained PPE model
-3. Place di folder `models/ppe_detection/`
+**Option B: Model lain / kustom**
+```bash
+python download_ppe_model.py --url <URL_MODEL_LAIN> -o ppe_reference/ppe.pt
+```
 
 **Option C: Use Roboflow**
 1. Visit: https://universe.roboflow.com/search?q=ppe
